@@ -63,33 +63,38 @@ export default function VintageNewspaper() {
         {/* Newspaper Header */}
         <header className="border-b-4 border-black mb-6 pb-4">
           {/* Top Banner */}
-          <div className="flex justify-between items-center text-xs uppercase tracking-wider mb-2 pb-2 border-b border-black">
-            <div>
-              <span className="font-bold">By Shayan GeeDook</span>
-              <div className="text-xs mt-1" style={{ fontSize: "10px", lineHeight: "1.2" }}>
+          <div className="flex flex-wrap justify-between items-start text-[10px] sm:text-xs uppercase tracking-wider mb-2 pb-2 border-b border-black gap-2">
+            {/* Author Info */}
+            <div className="max-w-[40%] min-w-[120px]">
+              <span className="font-bold block">By Shayan GeeDook</span>
+              <div className="mt-1 leading-tight">
                 Computer Science enthusiast sharing insights
                 <br />
                 on Linux, programming, and geek culture
               </div>
             </div>
-            <div className="text-center">
+
+            {/* Center Title */}
+            <div className="text-center flex-1 min-w-[140px]">
               <div
-                className="text-2xl font-bold tracking-wider mb-1"
-                style={{ fontFamily: '"Old English Text MT", serif', fontSize: "2rem" }}
+                className="font-bold tracking-wider mb-1 text-lg sm:text-2xl"
+                style={{ fontFamily: '"Old English Text MT", serif' }}
               >
                 The Geek Chronicle
               </div>
             </div>
-            <div className="text-right border-2 border-black p-2">
+
+            {/* Right Box */}
+            <div className="hidden md:block text-right border-2 border-black p-2 min-w-[100px]">
               <div className="font-bold">WEEKLY EDITION</div>
-              <div style={{ fontSize: "10px" }}>CODE & CREATIVITY</div>
+              <div className="text-[10px]">CODE & CREATIVITY</div>
             </div>
           </div>
 
           {/* Main Masthead */}
           <div className="text-center mb-4">
             <h1
-              className="font-black tracking-wider mb-2 text-7xl"
+              className="font-black tracking-wider mb-2 text-5xl md:text-7xl"
               style={{ fontFamily: '"Old English Text MT", serif', textShadow: "2px 2px 0px rgba(0,0,0,0.3)" }}
             >
               COMPUTER WORLD NEWS
