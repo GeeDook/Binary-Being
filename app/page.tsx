@@ -1,60 +1,29 @@
 import Link from "next/link"
+import importedArticles from "@/lib/data/articles.json";
 
-// Move articles data outside component to reduce processing time
-const articles = [
-  {
-    id: 1,
-    headline: "The Evolution of Linux Kernel",
-    subheadline: "From Linus's bedroom project to powering the world's servers",
-    author: "Shayan GeeDook",
-    date: "January 15, 2025",
-    content:
-      "What started as a hobby project by a Finnish computer science student has become the backbone of modern computing...",
-    category: "Operating Systems",
-    featured: true,
-  },
-  {
-    id: 2,
-    headline: "Mastering the Command Line",
-    subheadline: "Why terminal skills are essential for every developer",
-    author: "Shayan GeeDook",
-    date: "January 12, 2025",
-    content:
-      "In an age of graphical interfaces and drag-and-drop simplicity, the command line remains the most powerful tool...",
-    category: "Terminal & CLI",
-  },
-  {
-    id: 3,
-    headline: "The Art of Clean Code",
-    subheadline: "Writing code that humans can read and maintain",
-    author: "Shayan GeeDook",
-    date: "January 10, 2025",
-    content:
-      "Any fool can write code that a computer can understand. Good programmers write code that humans can understand...",
-    category: "Programming",
-  },
-  {
-    id: 4,
-    headline: "Docker and Containerization",
-    subheadline: "Revolutionizing software deployment and development",
-    author: "Shayan GeeDook",
-    date: "January 8, 2025",
-    content: "Containers have fundamentally changed how we think about software deployment...",
-    category: "DevOps",
-  },
-  {
-    id: 5,
-    headline: "The Future of AI and Programming",
-    subheadline: "How machine learning is reshaping software development",
-    author: "Shayan GeeDook",
-    date: "January 5, 2025",
-    content: "As AI tools like GitHub Copilot and ChatGPT become mainstream, the role of programmers is evolving...",
-    category: "Artificial Intelligence",
-  },
-]
+type Article = {
+  id: string;
+  headline: string;
+  subheadline?: string;
+  author: string;
+  date: string;
+  content: string;
+  category: string;
+  featured?: boolean;
+}
 
-const featuredArticle = articles.find((article) => article.featured)
-const regularArticles = articles.filter((article) => !article.featured)
+const articles: Article[] = importedArticles;
+
+const featuredArticle = articles.find(article => article.featured);
+const regularArticles = articles.filter(article => !article.featured);
+
+const categoryCountMap: Record<string, number> = {};
+
+// articles.forEach(article => {
+//   const category = article.category;
+//   categoryCountMap[category] = (categoryCountMap[category] || 0) + 1;
+// });
+
 
 export default function VintageNewspaper() {
   return (
@@ -114,6 +83,7 @@ export default function VintageNewspaper() {
 
         {/* Main Content Grid */}
         <div className="grid gap-6 lg:grid-cols-12">
+          
           {/* Left Column */}
           <div className="space-y-6 lg:col-span-3">
             {/* Featured Small Article */}
@@ -140,13 +110,14 @@ export default function VintageNewspaper() {
                 <div className="text-xs mb-2">
                   By {article.author} • {article.date}
                 </div>
-                <p className="text-sm leading-relaxed text-justify">{article.content.substring(0, 200)}...</p>
+                <div dangerouslySetInnerHTML={{ __html: article.content.substring(0,150)}} />
               </article>
             ))}
           </div>
 
           {/* Center Column - Featured Article */}
           <div className="lg:col-span-6">
+            
             {featuredArticle && (
               <article className="mb-6">
                 <div className="text-sm uppercase tracking-wider mb-2 font-bold">
@@ -170,11 +141,8 @@ export default function VintageNewspaper() {
                 </div>
 
                 <div className="text-base leading-relaxed text-justify mb-4">
-                  <p className="mb-4">{featuredArticle.content}</p>
-                  <p className="mb-4">
-                    The beauty of Linux lies not just in its technical excellence, but in its philosophy of openness and
-                    collaboration. Every line of code is scrutinized by thousands of developers worldwide.
-                  </p>
+                <div dangerouslySetInnerHTML={{ __html: featuredArticle.content.substring(0,600)}} />
+                  {/* <p className="mb-4">{featuredArticle.content.substring(0,600)}...</p> */}
                 </div>
 
                 <div className="text-sm pt-2 border-t border-black">
@@ -188,7 +156,7 @@ export default function VintageNewspaper() {
               {regularArticles.slice(2, 4).map((article) => (
                 <article key={article.id}>
                   <div className="text-xs uppercase tracking-wider mb-1 font-bold">{article.category}</div>
-                  <h3 className="text-xl font-bold leading-tight mb-2">
+                  <h3 className="text-xl font-bold leading-tight mb-2 " >
                     <Link href={`/article/${article.id}`} className="hover:underline">
                       {article.headline}
                     </Link>
@@ -197,8 +165,8 @@ export default function VintageNewspaper() {
                   <div className="text-xs mb-2">
                     By {article.author} • {article.date}
                   </div>
-                  <p className="text-sm leading-relaxed text-justify">{article.content.substring(0, 150)}...</p>
-                </article>
+                  <div dangerouslySetInnerHTML={{ __html: article.content.substring(0,150)}} />
+                  </article>
               ))}
             </div>
           </div>
