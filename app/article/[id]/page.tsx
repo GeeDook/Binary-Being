@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import articles from "@/lib/data/articles.json";
+import articles from "lib/Data/articles.json";
 
 // This function is required for static site generation with dynamic routes
 export async function generateStaticParams() {
