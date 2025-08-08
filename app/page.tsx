@@ -1,5 +1,5 @@
 import Link from "next/link"
-import importedArticles from "@/lib/data/articles.json";
+import importedArticles from "lib/Data/articles.json";
 
 type Article = {
   id: string;
