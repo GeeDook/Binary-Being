@@ -376,3 +376,19 @@
 .border-t-4 {
   border-top-width: 4px !important;
 }
+
+.input {
+  @apply w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black;
+}
+
+.label {
+  @apply block font-semibold mb-1;
+}
+
+.btn-primary {
+  @apply bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition;
+}
+
+.btn-secondary {
+  @apply border px-4 rounded-lg hover:bg-gray-100;
+}

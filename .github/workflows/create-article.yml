@@ -1,0 +1,59 @@
+name: Create Article
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Article title"
+        required: true
+      author:
+        description: "Author name"
+        required: true
+      date:
+        description: "Date"
+        required: true
+      body:
+        description: "Markdown content"
+        required: true
+
+jobs:
+  create-article:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create new Markdown file
+        run: |
+          mkdir -p content/posts
+
+          TITLE="${{ github.event.inputs.title }}"
+          SLUG=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+
+          FILE="content/posts/$SLUG.md"
+
+          echo "---" >> "$FILE"
+          echo "title: \"$TITLE\"" >> "$FILE"
+          echo "author: \"${{ github.event.inputs.author }}\"" >> "$FILE"
+          echo "date: \"${{ github.event.inputs.date }}\"" >> "$FILE"
+          echo "---" >> "$FILE"
+          echo "${{ github.event.inputs.body }}" >> "$FILE"
+
+      - name: Show files
+        run: ls -l content/posts
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add content/posts
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Add article: ${{ github.event.inputs.title }}"
+          git push
