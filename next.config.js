@@ -2,6 +2,7 @@
 const nextConfig = {
   output: "export",
   basePath: "/Binary-Being",
+  assetPrefix: "/Binary-Being",
   trailingSlash: true,
   distDir: "out",
   eslint: {
