@@ -1,7 +1,7 @@
 // app/article/[slug]/page.tsx
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getPostBySlug } from "@/lib/posts";
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
 
 type Article = {
   slug: string;
@@ -15,17 +15,8 @@ type Article = {
   tags?: string[];
 };
 
-// Generate dynamic routes for all posts
-export async function generateStaticParams() {
-  const fs = await import("fs");
-  const path = await import("path");
-
-  const postsDirectory = path.join(process.cwd(), "content/posts");
-  const files = fs.readdirSync(postsDirectory);
-
-  return files.map((fileName) => ({
-    slug: fileName.replace(/\.md$/, ""),
-  }));
+export function generateStaticParams() {
+  return getAllPosts().map(({ slug }) => ({ slug }));
 }
 
 // Server Component
