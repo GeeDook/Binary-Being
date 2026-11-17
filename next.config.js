@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: process.env.NODE_ENV === "production" ? "/Binary-Being" : "",
   output: "export",
   trailingSlash: true,
   distDir: "out",
