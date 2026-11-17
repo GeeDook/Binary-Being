@@ -1,47 +1,43 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { assertUniqueSlugs, parseArticleFile } from "./article-validation.js";
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
 export function getAllPosts() {
-  const fileNames = fs.readdirSync(postsDirectory);
-
-  return fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, "");
+  const fileNames = fs.readdirSync(postsDirectory).filter((fileName) => fileName.endsWith(".md"));
+  const posts = fileNames.map((fileName) => {
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, "utf8");
-
-    const { data } = matter(fileContents);
-
-    return {
-      slug,
-      headline: data.title,
-      subheadline: data.subheadline ?? "",
-      author: data.author ?? "Unknown",
-      date: data.date ?? "",
-      category: data.category ?? "General",
-      featured: data.featured ?? false,
-      tags: data.tags ?? [],
-    };
+    return parseArticleFile(fileName, fileContents);
   });
+  assertUniqueSlugs(posts);
+
+  return posts.map(({ slug, title, subheadline, author, date, category, featured, tags }) => ({
+    slug,
+    headline: title,
+    subheadline,
+    author,
+    date,
+    category,
+    featured,
+    tags,
+  }));
 }
 
 export async function getPostBySlug(slug: string) {
   const fullPath = path.join(postsDirectory, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
-
-  const { data, content } = matter(fileContents);
+  const post = parseArticleFile(`${slug}.md`, fileContents);
 
   const processedContent = await remark()
     .use(html)
-    .process(content);
+    .process(post.content);
 
   return {
-    slug,
     contentText: processedContent.toString(),
-    ...data,
+    ...post,
   };
 }

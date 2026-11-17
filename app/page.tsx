@@ -7,7 +7,7 @@ type Article = {
   subheadline?: string;
   author: string;
   date: string;
-  contentText: string;
+  contentText?: string;
   category: string;
   featured?: boolean;
 };
